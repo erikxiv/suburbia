@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Suburbia Memory</title>
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+  <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+
+  <script src="scripts/jquery.min.js"></script>
+  <script src="scripts/bootstrap.js"></script>
+  <script src="scripts/bootstrap-dropdown.js"></script>
+  <script src="scripts/flippant.js"></script>
+
+  <script type='text/javascript'>
+function shuffleArray(array) {
+    for (var i = array.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var temp = array[i];
+        array[i] = array[j];
+        array[j] = temp;
+    }
+    return array;
+}
+
+  var cards = [];
+  var current = null;
+  var two = false;
+  var moves = 0;
+  var total = 6
+  var remaining = total;
+  for (var i = 1; i <= total; i++) {
+    var card = {};
+    card['img'] = i+'.jpg';
+    cards.push(card);
+    cards.push(card);
+  }
+  cards = shuffleArray(cards);
+  $(document).ready(function(){
+    var memory = $('.memory');
+    for (var i in cards) {
+      // memory.append("<div>a"+i+"b</div>")
+    }
+
+    $('#topbar').dropdown();
+    $('.restart').click(function() {
+      window.location.reload();
+    });
+    $('.back').click(function() {
+      var index = $(this).data("index");
+      if (!two) {
+        if (current != null) {
+          moves = moves + 1;
+          $(".moves").html("Moves - " + moves);
+          var back = flippant.flip($(this).find(':first-child')[0], "<img class='img-polaroid' width='140' height='140' src='img/"+cards[index]["img"]+"'/>");
+          if (cards[index]["img"] == cards[current]["img"]) {
+            // Increase score
+            remaining = remaining - 1;
+            $(".remaining").html("Remaining - " + remaining);
+          }
+          else {
+            two = true;
+            var tmp = current;
+            setTimeout(function() {
+              back.close();
+              cards[tmp]["back"].close();
+              two = false;
+            },1000);
+          }
+          current = null;
+          $(".score").html("Score - " + Math.floor(100*total/(moves+remaining)) + "%");
+          if (remaining == 0) {
+            $('#score').modal();
+          }
+        }
+        else {
+          var back = flippant.flip($(this).find(':first-child')[0], "<img class='img-polaroid' width='140' height='140' src='img/"+cards[index]["img"]+"'/>");
+          cards[index]["back"] = back;
+          current = index;
+        }
+      }
+      // back.onclick = function() {
+      //   back.close();
+      //   cards[index]["back"] = null;
+      // }
+    });
+  });
+  </script>
+
+  <!-- Le styles -->
+  <link href="styles/bootstrap.min.css" rel="stylesheet">
+  <link href="styles/flippant.css" rel="stylesheet">
+  <style type="text/css">
+  body {
+    padding-top: 60px;
+  }
+  </style>
+
+  <!-- Le fav and touch icons -->
+  <link rel="shortcut icon" href="img/favicon.ico">
+</head>
+
+<body>
+  <div class="navbar navbar-fixed-top navbar-inverse">
+    <div class="navbar-inner">
+      <div class="container">
+        <a class="brand" href="/">Suburbia Memory&nbsp;
+          <span class="badge badge-success moves">Moves - 0</span>
+          <span class="badge badge-important remaining">Remaining - 6</span>
+          <span class="badge badge-info score">Score - 100%</span>
+        </a>
+
+        <ul class="nav">
+<!--           <li class="active"><a href="/">Home</a></li> -->
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+<!--     <div class="row ">
+      <div class="span6">Moves: <span class="moves">0</span></div>
+      <div class="span6">Remaining: <span class="remaining">6</span></div>
+    </div> -->
+    <div class="row">
+      <div data-index="0" class="span2 back"><div><img class="img-polaroid" width="140" height="140" src="img/back.jpg"/></div></div>
+      <div data-index="1" class="span2 back"><div><img class="img-polaroid" width="140" height="140" src="img/back.jpg"/></div></div>
+      <div data-index="2" class="span2 back"><div><img class="img-polaroid" width="140" height="140" src="img/back.jpg"/></div></div>
+      <div data-index="3" class="span2 back"><div><img class="img-polaroid" width="140" height="140" src="img/back.jpg"/></div></div>
+      <div data-index="4" class="span2 back"><div><img class="img-polaroid" width="140" height="140" src="img/back.jpg"/></div></div>
+      <div data-index="5" class="span2 back"><div><img class="img-polaroid" width="140" height="140" src="img/back.jpg"/></div></div>
+    </div>
+    <div class="row">
+      <div data-index="6" class="span2 back"><div><img class="img-polaroid" width="140" height="140" src="img/back.jpg"/></div></div>
+      <div data-index="7" class="span2 back"><div><img class="img-polaroid" width="140" height="140" src="img/back.jpg"/></div></div>
+      <div data-index="8" class="span2 back"><div><img class="img-polaroid" width="140" height="140" src="img/back.jpg"/></div></div>
+      <div data-index="9" class="span2 back"><div><img class="img-polaroid" width="140" height="140" src="img/back.jpg"/></div></div>
+      <div data-index="10" class="span2 back"><div><img class="img-polaroid" width="140" height="140" src="img/back.jpg"/></div></div>
+      <div data-index="11" class="span2 back"><div><img class="img-polaroid" width="140" height="140" src="img/back.jpg"/></div></div>
+    </div>
+    <footer>
+      <p/>
+      <p>&copy; Katarina Lundgren 2013</p>
+    </footer>
+  </div> <!-- /container -->
+
+  <div id="score" class="modal hide fade">
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+      <h3>You made it!</h3>
+    </div>
+    <div class="modal-body">
+      <p>
+        <span class="score">Score - 100%</span>
+        <a role="button" class="btn btn-primary pull-right restart" data-toggle="score">Try again</a>
+      </p>
+    </div>
+  </div>
+
+</body>
+</html>

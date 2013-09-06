@@ -1,0 +1,13 @@
+{
+  "name": "suburbia",
+  "version": "1.0.0",
+  "dependencies": {
+    "express": "3.x",
+    "uinexpress": "0.x",
+    "underscore": "1.4.x"
+  },
+  "engines": {
+    "node": "0.8.x",
+    "npm": "1.1.x"
+  }
+}
