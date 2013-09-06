@@ -38,6 +38,9 @@ function shuffleArray(array) {
     card['img'] = i+'.jpg';
     cards.push(card);
     cards.push(card);
+    // preload image
+    var img = new Image();
+    img.src = card['img'];
   }
   cards = shuffleArray(cards);
   $(document).ready(function(){
