@@ -24,7 +24,7 @@ function start(route, port) {
     app.set('view engine', 'html')
   });
   app.use(express.favicon());
-  app.use(express.static(__dirname + '/../public', { maxAge: oneDay }));
+  app.use(express.static(__dirname + '/../public', { maxAge: 86400000 }));
   app.use(express.logger());
   app.get("/", route["/"]);
   app.listen(port);
