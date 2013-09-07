@@ -26,20 +26,23 @@ function shuffleArray(array) {
     }
     return array;
 }
-
+  var images = [<% _.each(images, function(name) { %>"<%= name %>",<% }); %>];
+  images = shuffleArray(images);
   var cards = [];
   var current = null;
   var two = false;
   var moves = 0;
-  var total = 6
+  var total = 12;
+  var mistakes = 0;
   var remaining = total;
-  for (var i = 1; i <= total; i++) {
+  var score = 1;
+  for (var i = 0; i < total; i++) {
     var card = {};
-    card['img'] = i+'.jpg';
-    cards.push(card);
-    cards.push(card);
+    card['img'] = images[i];
+    cards.push({img: images[i]});
+    cards.push({img: images[i]});
       // preload image
-    (new Image()).src = 'img/' +i+'.jpg';
+    (new Image()).src = images[i];
   }
   cards = shuffleArray(cards);
   $(document).ready(function(){
@@ -58,13 +61,23 @@ function shuffleArray(array) {
         if (current != null) {
           moves = moves + 1;
           $(".moves").html("Moves - " + moves);
-          var back = flippant.flip($(this).find(':first-child')[0], "<img class='img-polaroid' width='140' height='140' src='img/"+cards[index]["img"]+"'/>");
+          var back = flippant.flip($(this).find(':first-child')[0], "<img class='img-polaroid' width='140' height='140' src='"+cards[index]["img"]+"'/>");
           if (cards[index]["img"] == cards[current]["img"]) {
             // Increase score
             remaining = remaining - 1;
             $(".remaining").html("Remaining - " + remaining);
           }
           else {
+            if (cards[index]["flipped"] || cards[current]["flipped"]) {
+              mistakes = mistakes + 1;
+              score = score - score / remaining;
+              $(".score").html("Score - " + Math.floor(100*score) + "%");
+              $(".mistakes").html("Mistakes - " + mistakes);
+            }
+            else {
+              cards[index]["flipped"] = true;              
+              cards[current]["flipped"] = true;              
+            }
             two = true;
             var tmp = current;
             setTimeout(function() {
@@ -74,13 +87,12 @@ function shuffleArray(array) {
             },1000);
           }
           current = null;
-          $(".score").html("Score - " + Math.floor(100*total/(moves+remaining)) + "%");
           if (remaining == 0) {
             $('#score').modal();
           }
         }
         else {
-          var back = flippant.flip($(this).find(':first-child')[0], "<img class='img-polaroid' width='140' height='140' src='img/"+cards[index]["img"]+"'/>");
+          var back = flippant.flip($(this).find(':first-child')[0], "<img class='img-polaroid' width='140' height='140' src='"+cards[index]["img"]+"'/>");
           cards[index]["back"] = back;
           current = index;
         }
@@ -103,7 +115,7 @@ function shuffleArray(array) {
   </style>
 
   <!-- Le fav and touch icons -->
-  <link rel="shortcut icon" href="img/favicon.ico">
+  <link rel="shortcut icon" href="favicon.ico">
 </head>
 
 <body>
@@ -112,7 +124,8 @@ function shuffleArray(array) {
       <div class="container">
         <a class="brand" href="/">Suburbia Memory&nbsp;
           <span class="badge badge-success moves">Moves - 0</span>
-          <span class="badge badge-important remaining">Remaining - 6</span>
+          <span class="badge remaining">Remaining - 12</span>
+          <span class="badge badge-important mistakes">Mistakes - 0</span>
           <span class="badge badge-info score">Score - 100%</span>
         </a>
 
@@ -143,6 +156,22 @@ function shuffleArray(array) {
       <div data-index="9" class="span2 back"><div><img class="img-polaroid" width="140" height="140" src="img/back.jpg"/></div></div>
       <div data-index="10" class="span2 back"><div><img class="img-polaroid" width="140" height="140" src="img/back.jpg"/></div></div>
       <div data-index="11" class="span2 back"><div><img class="img-polaroid" width="140" height="140" src="img/back.jpg"/></div></div>
+    </div>
+    <div class="row">
+      <div data-index="12" class="span2 back"><div><img class="img-polaroid" width="140" height="140" src="img/back.jpg"/></div></div>
+      <div data-index="13" class="span2 back"><div><img class="img-polaroid" width="140" height="140" src="img/back.jpg"/></div></div>
+      <div data-index="14" class="span2 back"><div><img class="img-polaroid" width="140" height="140" src="img/back.jpg"/></div></div>
+      <div data-index="15" class="span2 back"><div><img class="img-polaroid" width="140" height="140" src="img/back.jpg"/></div></div>
+      <div data-index="16" class="span2 back"><div><img class="img-polaroid" width="140" height="140" src="img/back.jpg"/></div></div>
+      <div data-index="17" class="span2 back"><div><img class="img-polaroid" width="140" height="140" src="img/back.jpg"/></div></div>
+    </div>
+    <div class="row">
+      <div data-index="18" class="span2 back"><div><img class="img-polaroid" width="140" height="140" src="img/back.jpg"/></div></div>
+      <div data-index="19" class="span2 back"><div><img class="img-polaroid" width="140" height="140" src="img/back.jpg"/></div></div>
+      <div data-index="20" class="span2 back"><div><img class="img-polaroid" width="140" height="140" src="img/back.jpg"/></div></div>
+      <div data-index="21" class="span2 back"><div><img class="img-polaroid" width="140" height="140" src="img/back.jpg"/></div></div>
+      <div data-index="22" class="span2 back"><div><img class="img-polaroid" width="140" height="140" src="img/back.jpg"/></div></div>
+      <div data-index="23" class="span2 back"><div><img class="img-polaroid" width="140" height="140" src="img/back.jpg"/></div></div>
     </div>
     <footer>
       <p/>

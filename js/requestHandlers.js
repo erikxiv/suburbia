@@ -7,7 +7,9 @@ function start(request, response) {
   //request.getPostData(function (postData) {
     response.writeHead(200, {"Content-Type": "text/html"});
     // response.write(t_start({ text: "Hello World!"}));
-    response.write(_.template(fs.readFileSync("./html/test.html").toString())({ text: "Hello World!"}));
+    images = fs.readdirSync("public/img/memory");
+    images = _.map(images, function(n){ return "img/memory/" + n; });
+    response.write(_.template(fs.readFileSync("./html/test.html").toString())({images: images}));
     //response.write("asdf " + postData);
     response.end();
   //});
